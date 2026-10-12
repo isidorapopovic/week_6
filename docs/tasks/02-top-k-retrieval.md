@@ -33,25 +33,26 @@ for k in (2, 3):
         print("Text:", item.chunk.text)
 '@ | python -
 
-python -m unittest discover -s tests -v
+python -m pytest -q
 ```
 
 Check each reported score against `matches / tokens`. To verify top-k selection as well as ordering, inspect all eligible results with `k=len(chunks)` and confirm the smaller lists are prefixes of that ranking. Discuss semantic relevance separately: common question words may score even when a chunk does not answer the question.
 
-## Evidence worksheet
+## Completed evidence (2026-10-12)
 
-- Query: TODO
-- Corpus and chunk configuration: TODO
-- Top-k output (`k=2`): TODO
-- Top-k output (`k=3`): TODO
-- Full eligible ranking: TODO
-- Why ranking is correct under the implemented score: TODO
-- Semantic relevance or ranking limitations: TODO
-- Test command, output, and any fixes: TODO
+- Query: `How do chunk size and overlap improve retrieval quality?`
+- Corpus and chunk configuration: default; `chunk_size=140`, `overlap=30`, `min_score=0.01`.
+- Top-k output (`k=2`): `doc-2-chunk-0` (0.4), `doc-2-chunk-1` (0.2).
+- Top-k output (`k=3`): the same two results followed by `doc-3-chunk-1` (0.2).
+- Full eligible ranking: [full text, scores, commands, and verification](../evidence/task-02-top-k-retrieval.md).
+- Why ranking is correct: descending matching-token density; equal scores preserve corpus/chunk order. Both shorter lists are prefixes of the full eligible ranking.
+- Semantic relevance limitation: second and third results match only `and`; the third result is about refusal, not chunking. Correct numerical ordering does not guarantee all returned chunks answer the question.
+- Changes: added a reproducible evidence script and six test cases covering exact scores, top-2/top-3 selection, ties, filtering boundaries, fewer-than-k results, invalid k, and the fixed corpus ranking. Retrieval implementation retained because it satisfies its current scoring contract. Corrected the test runner here to pytest and Task 01's best-score token counts to 8/20 (score unchanged).
+- Test command: `python -m pytest -q`; final output is recorded in the linked evidence after execution.
 
 ## Acceptance checks
 
-- [ ] Both required k values are documented.
-- [ ] Scores are nonincreasing and meet the minimum score.
-- [ ] Returned count is at most k and selected results lead the full ranking.
-- [ ] IDs, text, and score calculations are recorded.
+- [x] Both required k values are documented.
+- [x] Scores are nonincreasing and meet the minimum score.
+- [x] Returned count is at most k and selected results lead the full ranking.
+- [x] IDs, text, and score calculations are recorded.

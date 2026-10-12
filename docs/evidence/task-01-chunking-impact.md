@@ -99,7 +99,7 @@ Citations: doc-2-chunk-1, doc-2-chunk-0
 | Observation | Config A | Config B |
 | --- | --- | --- |
 | Chunk count | 6 | 9 |
-| Best score | 10 matching tokens / 25 tokens = 0.4 | 7 matching tokens / 14 tokens = 0.5 |
+| Best score | 8 matching tokens / 20 tokens = 0.4 | 7 matching tokens / 14 tokens = 0.5 |
 | Second score | 1 / 5 = 0.2 | 5 / 15 = 0.333333 |
 | Key sentence intact in first result | Yes | No |
 | Fragment examples | `source tra`, `d evidence` | `improv`, `e and overlap`, `ering` |
