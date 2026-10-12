@@ -49,6 +49,16 @@ pip install -r requirements.txt
 
 ## Run tests
 
+For the verified Windows environment:
+
+```powershell
+python -m venv .venv-checklist
+.\.venv-checklist\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv-checklist\Scripts\python.exe -m scripts.validate_checklist
+```
+
+This runs all evidence scripts and the pytest suite with the pinned dependency. [The completed technical checklist](docs/homework-checklist.md) links to the recorded results.
+
 ```bash
 ./scripts/run_tests.sh
 ```
@@ -62,6 +72,8 @@ python -m src.cli --corpus-profile training-rag --question "Why are citations im
 ```
 
 ## Corpus profiles
+
+Optional lexical-scoring extension: add `--ignore-common-words` to a CLI command to exclude common grammatical/question words from matches. This reduces common-word-only retrieval; the original scoring remains the default. See [extension evidence](docs/evidence/checklist-completion.md).
 
 - `default`: compact baseline corpus for Week 6 fundamentals.
 - `training-rag`: profile mirroring examples with focus on citations, references, and LLM-as-a-judge framing.

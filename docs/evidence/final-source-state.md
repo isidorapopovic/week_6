@@ -10,3 +10,7 @@
 This source-state note is added in a subsequent documentation-only commit so the technical revision can be recorded without a self-referential commit hash. The tested application, tests, and evidence runner are identical to the recorded revision.
 
 Pair-member names, contributions, and demo lead remain awaiting learner input. The technical submission evidence is complete; the personal report-accountability fields are not yet complete.
+
+## Subsequent checklist completion
+
+The revision above records the original completed Tasks 01–05. A subsequent checklist-completion commit adds optional common-word-filtered lexical scoring and six tests, leaving the default scoring unchanged. All evidence scripts were rerun in a fresh environment with pytest 8.3.3; the complete suite passed 34 tests. See [the transcript](checklist-validation.txt) and [completion evidence](checklist-completion.md). The checklist-completion revision is identifiable in `git log` by `Complete checklist installation and lexical scoring extension`.

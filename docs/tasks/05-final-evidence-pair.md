@@ -44,3 +44,5 @@ Run `python -m scripts.final_evidence` from the repository root to reproduce the
 - [ ] Test snapshot, pair contributions, and demo lead are recorded.
 
 Technical evidence and the test snapshot are complete. The final checkbox remains open only because pair contributions and the demo lead require learner input.
+
+Subsequent checklist completion verified fresh installation with pinned pytest 8.3.3 and added the exact optional lexical-scoring extension with six tests. The latest complete-suite result is `34 passed in 0.14s`; [full validation transcript](../evidence/checklist-validation.txt). Learner understanding, contributions, and demo lead still need personal confirmation.

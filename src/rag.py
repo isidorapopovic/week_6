@@ -1,19 +1,10 @@
 from dataclasses import dataclass
 
 from .chunking import Chunk
-from .retrieval import retrieve_top_k, tokenize
+from .retrieval import COMMON_WORDS, retrieve_top_k, tokenize
 
 
 REFUSAL_MESSAGE = "I do not have enough grounded evidence in the provided corpus to answer that question."
-
-# Ignore common grammatical/question words when checking topic overlap.
-# This is a lexical guard, not proof that a passage entails an answer.
-COMMON_WORDS = frozenset(
-    "a an the and or but if in on at to of for from with by as is are was were "
-    "be been being do does did have has had should would could can may might "
-    "will shall what which who whom whose when where why how it its this that "
-    "these those i you we they he she them our your their".split()
-)
 
 
 @dataclass(frozen=True)
@@ -23,8 +14,9 @@ class RagAnswer:
     refused: bool
 
 
-def build_grounded_answer(question: str, chunks: list[Chunk], top_k: int = 2) -> RagAnswer:
-    results = retrieve_top_k(question, chunks, k=top_k)
+def build_grounded_answer(question: str, chunks: list[Chunk], top_k: int = 2,
+                          ignore_common_words: bool = False) -> RagAnswer:
+    results = retrieve_top_k(question, chunks, k=top_k, ignore_common_words=ignore_common_words)
     if not results:
         return RagAnswer(answer=REFUSAL_MESSAGE, citations=[], refused=True)
 

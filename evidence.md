@@ -109,6 +109,19 @@ Task 05 originally specified `python -m unittest discover -s tests -v`. That com
 
 ## Submission review
 
-All five technical outcomes have recorded evidence, both case commands are explicit, and the test snapshot is preserved. [The original checklist](docs/homework-checklist.md) remains the submission guidance. Installation was not repeated: the existing Python environment successfully runs the app and tests. Learner understanding and personal contributions cannot be inferred from automated runs.
+All five technical outcomes have recorded evidence, both case commands are explicit, and the test snapshot is preserved. [The updated checklist](docs/homework-checklist.md) marks verified work and leaves personal items open. Fresh installation was subsequently verified in `.venv-checklist` with the exact pinned pytest 8.3.3 dependency. Learner understanding and personal contributions cannot be inferred from automated runs.
 
 Known limits: character chunking can split words and duplicate context; lexical rankings can reward common words; cited text is copied rather than synthesized; the refusal guard checks content-word overlap rather than semantic entailment. Historical failure and correction are preserved in Task 04. Pair accountability and demo lead remain awaiting learner input.
+
+## Checklist completion validation
+
+Added the checklist's optional lexical-scoring improvement, exposed by `--ignore-common-words`, and six extension tests. Original scoring remains the default, so evidence above is unchanged. All task evidence scripts were rerun using the newly installed pinned environment, and both final cases passed verification.
+
+Latest full-suite snapshot (pytest 8.3.3):
+
+```text
+..................................                                       [100%]
+34 passed in 0.14s
+```
+
+[Full validation transcript](docs/evidence/checklist-validation.txt) and [installation/extension explanation](docs/evidence/checklist-completion.md). The earlier 28-test snapshot is historical; this 34-test result includes the completed optional extension.

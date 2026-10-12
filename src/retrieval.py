@@ -6,6 +6,13 @@ from .chunking import Chunk
 
 TOKEN_RE = re.compile(r"[a-zA-Z0-9]+")
 
+COMMON_WORDS = frozenset(
+    "a an the and or but if in on at to of for from with by as is are was were "
+    "be been being do does did have has had should would could can may might "
+    "will shall what which who whom whose when where why how it its this that "
+    "these those i you we they he she them our your their".split()
+)
+
 
 def tokenize(text: str) -> list[str]:
     return [token.lower() for token in TOKEN_RE.findall(text)]
@@ -17,23 +24,26 @@ class RetrievalResult:
     score: float
 
 
-def lexical_score(query: str, chunk_text: str) -> float:
+def lexical_score(query: str, chunk_text: str, ignore_common_words: bool = False) -> float:
     q_tokens = tokenize(query)
     c_tokens = tokenize(chunk_text)
     if not q_tokens or not c_tokens:
         return 0.0
 
     q_set = set(q_tokens)
+    if ignore_common_words:
+        q_set -= COMMON_WORDS
     overlap = sum(1 for token in c_tokens if token in q_set)
     return overlap / len(c_tokens)
 
 
-def retrieve_top_k(query: str, chunks: list[Chunk], k: int = 3, min_score: float = 0.01) -> list[RetrievalResult]:
+def retrieve_top_k(query: str, chunks: list[Chunk], k: int = 3, min_score: float = 0.01,
+                   ignore_common_words: bool = False) -> list[RetrievalResult]:
     if k <= 0:
         raise ValueError("k must be > 0")
 
     scored = [
-        RetrievalResult(chunk=chunk, score=lexical_score(query, chunk.text))
+        RetrievalResult(chunk=chunk, score=lexical_score(query, chunk.text, ignore_common_words))
         for chunk in chunks
     ]
     filtered = [item for item in scored if item.score >= min_score]

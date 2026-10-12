@@ -11,6 +11,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--chunk-size", type=int, default=140, help="Chunk size in characters")
     parser.add_argument("--overlap", type=int, default=30, help="Chunk overlap in characters")
     parser.add_argument("--top-k", type=int, default=2, help="Number of retrieved chunks")
+    parser.add_argument("--ignore-common-words", action="store_true",
+                        help="Exclude common question words from lexical matches (optional extension)")
     parser.add_argument(
         "--corpus-profile",
         default="default",
@@ -24,7 +26,8 @@ def main() -> None:
     args = parse_args()
     corpus = load_corpus(args.corpus_profile)
     chunks = build_chunks(corpus, chunk_size=args.chunk_size, overlap=args.overlap)
-    result = build_grounded_answer(args.question, chunks, top_k=args.top_k)
+    result = build_grounded_answer(args.question, chunks, top_k=args.top_k,
+                                  ignore_common_words=args.ignore_common_words)
 
     print("Question:")
     print(args.question)
