@@ -5,6 +5,48 @@ import pytest
 
 from src.corpus import load_corpus
 from src.retrieval import retrieve_top_k
+from src.chunking import Chunk
+from src.rag import REFUSAL_MESSAGE
+
+
+@pytest.mark.parametrize("query", [
+    "Who won the world cup in 1958?", "Zanzibar population 2025?",
+    "Who was emperor of Mars?", "the and in", "", "?!",
+])
+def test_unsupported_questions_have_consistent_refusal(query) -> None:
+    chunks = build_chunks(load_default_corpus(), chunk_size=140, overlap=30)
+    result = build_grounded_answer(query, chunks, top_k=2)
+    assert result.refused is True
+    assert result.answer == REFUSAL_MESSAGE
+    assert result.citations == []
+
+
+def test_common_word_retrieval_does_not_establish_support() -> None:
+    query = "Who won the world cup in 1958?"
+    chunks = build_chunks(load_default_corpus(), chunk_size=140, overlap=30)
+    retrieved = retrieve_top_k(query, chunks, k=2)
+    assert retrieved and retrieved[0].score >= 0.02
+    assert build_grounded_answer(query, chunks).refused is True
+
+
+def test_low_score_topic_match_still_refuses() -> None:
+    chunks = [Chunk("low", "1", "Low", "rag " + "weather " * 99)]
+    assert retrieve_top_k("rag", chunks)[0].score == 0.01
+    result = build_grounded_answer("rag", chunks)
+    assert result.refused is True
+    assert result.answer == REFUSAL_MESSAGE
+    assert result.citations == []
+
+
+def test_cli_unsupported_case_prints_refusal_without_citations(capsys, monkeypatch) -> None:
+    from src.cli import main
+
+    monkeypatch.setattr("sys.argv", ["rag", "--question", "Who won the world cup in 1958?"])
+    main()
+    output = capsys.readouterr().out
+    assert REFUSAL_MESSAGE in output
+    assert "Refused: True\nCitations: None" in output
+    assert "Grounded response" not in output
 
 
 @pytest.mark.parametrize("size, top_k", [(140, 2), (220, 1)])

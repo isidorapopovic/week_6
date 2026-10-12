@@ -1,6 +1,6 @@
 # Week 6 RAG evidence
 
-Status: Outcomes 1–3 completed on 2026-10-12. Outcomes 4–5 remain pending.
+Status: Outcomes 1–4 completed on 2026-10-12. Outcome 5 remains pending.
 
 1. **Outcome 1: Chunking impact**
    - Config A: `chunk_size=140, overlap=30`; 6 chunks; top results `doc-2-chunk-0` (0.400000), `doc-2-chunk-1` (0.200000).
@@ -15,9 +15,9 @@ Status: Outcomes 1–3 completed on 2026-10-12. Outcomes 4–5 remain pending.
    - Answer with citations: `[tr-doc-1-chunk-0] RAG with citations should retrieve relevant documents with source metadata and include references in the answer. Citations improve transparency and trust because users can verify evidence.` [Full answer, CLI output, baseline comparison, and passing tests](docs/evidence/task-03-citation-quality.md).
    - Retrieved chunk IDs: `tr-doc-1-chunk-0` (score 0.153846). Inline ID, separate citations list, and complete source text agree; `Refused: False`.
 4. **Outcome 4: Refusal behavior**
-   - Unsupported query: TODO — Task 04 pending.
-   - Retrieved context: TODO
-   - Refusal output: TODO
+   - Unsupported query: `Who won the world cup in 1958?`; default corpus; chunk size 140; overlap 30; top-k 2. Also tested `Zanzibar population 2025?` with the same settings.
+   - Retrieved context: World Cup returns `doc-1-chunk-0` (0.055556), `doc-3-chunk-0` (0.045455), matching only `the`; Zanzibar returns no chunks. [Full context, before/after evidence, commands, and tests](docs/evidence/task-04-refusal-behavior.md).
+   - Refusal output: `I do not have enough grounded evidence in the provided corpus to answer that question.` Both cases return `Refused: True` and no citations after the common-word-only support check was added. This lexical guard does not prove semantic support for every accepted question.
 5. **Outcome 5: Final evidence pair**
    - Supported case command + output: TODO — Task 05 pending.
    - Unsupported case command + output: TODO
