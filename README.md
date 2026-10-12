@@ -99,3 +99,5 @@ Use this exact structure for easy review:
   - Unsupported case command + output
 
 Use `docs/homework-checklist.md` as submission guidance.
+
+Separate task guides, reproducible commands, and evidence worksheets are available in [docs/tasks/README.md](docs/tasks/README.md). Complete their evidence fields before using them in the Week 6 report.
